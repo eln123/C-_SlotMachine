@@ -24,14 +24,24 @@ int get_slot_machine_spin(int rows, int cols, vector<char> symbols)
     vector<int> all_symbols = {};
     for (int i = 0; i < symbols.size(); i++)
     {
+
         char letter = symbols[i];
         int count = symbol_count[i];
-        for (int j = 0; j < count; j++)
+        for (int j = 0; j < symbol_count[i]; j++)
         {
+
             all_symbols.push_back(letter);
         }
+    }
+    vector<int> columns = {};
+    for (int i = 0; i < cols; i++)
+    {
+        for (int j = 0; j < rows; j++)
+        {
+            int randomNumber = rand() % all_symbols.size();
+            char value = all_symbols[randomNumber];
+        }
     };
-    cout << all_symbols.size() << endl;
     return 0;
 }
 
