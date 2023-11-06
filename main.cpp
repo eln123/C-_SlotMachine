@@ -1,50 +1,14 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <array>
 #include <tuple>
 #include <string>
 #include <random>
 using namespace std;
 // g++ -std=c++11 -o run main.cpp
 
-int MAX_LINES = 3;
-int MAX_BET = 100;
-int MIN_BET = 1;
-
-int ROWS = 3;
-int COLS = 3;
-
-vector<char> symbols = {'A', 'B', 'C', 'D'};
-vector<int> symbol_count = {2, 4, 6, 8};
-// you have to have 2 different vectors
-// you can store multiple data types in a map, but the problem is you can't access them at index numbers
-
-int get_slot_machine_spin(int rows, int cols, vector<char> symbols)
-{
-    vector<int> all_symbols = {};
-    for (int i = 0; i < symbols.size(); i++)
-    {
-
-        char letter = symbols[i];
-        int count = symbol_count[i];
-        for (int j = 0; j < symbol_count[i]; j++)
-        {
-
-            all_symbols.push_back(letter);
-        }
-    }
-    vector<int> columns = {};
-    for (int i = 0; i < cols; i++)
-    {
-        for (int j = 0; j < rows; j++)
-        {
-            int randomNumber = rand() % all_symbols.size();
-            char value = all_symbols[randomNumber];
-        }
-    };
-    return 0;
-}
-
+/* 1) */
 int deposit()
 {
     int amount;
@@ -70,7 +34,8 @@ int deposit()
     }
     return amount;
 }
-
+int MAX_LINES = 3;
+/* 2) */
 int get_number_of_lines()
 {
     int lines;
@@ -107,6 +72,11 @@ int get_number_of_lines()
     return lines;
 }
 
+// 3)
+
+int MAX_BET = 100;
+int MIN_BET = 1;
+
 int get_bet()
 {
     int amount;
@@ -130,30 +100,77 @@ int get_bet()
     return amount;
 }
 
+int ROWS = 3;
+int COLS = 3;
+
+int symbols_count[4][2] = {{'A', 2}, {'B', 4}, {'C', 6}, {'D', 8}};
+// 4)
+
+string convert_hash_to_str(int hash)
+{
+    if (hash == 65)
+    {
+        return "A";
+    };
+    if (hash == 66)
+    {
+        return "B";
+    };
+    if (hash == 67)
+    {
+        return "C";
+    };
+    if (hash == 68)
+    {
+        {
+            return "D";
+        }
+    };
+    return "";
+}
+
+int get_slot_machine_spin(int rows, int cols, int symbols[4][2])
+{
+    vector<string> all_symbols = {};
+    for (int i = 0; i < (sizeof(symbols_count) / sizeof(symbols_count[0])); i++)
+    {
+        string symbol = to_string(symbols[i][0]);
+        int count = stoi(to_string(symbols[i][1]));
+        // stoi converts string to int
+        for (int j = 0; j < count; j++)
+        {
+            all_symbols.push_back(symbol);
+        }
+    }
+    for (int i = 0; i < all_symbols.size(); i++)
+    {
+        cout << convert_hash_to_str(stoi(all_symbols[i])) << endl;
+    }
+    return 0;
+};
+
 int main()
 {
-    int num = get_slot_machine_spin(ROWS, COLS, symbols);
     int balance = deposit();
-    int lines = get_number_of_lines();
-    /* we have to define bet and total bet outside the while loop*/
-    int bet = 0;
-    int total_bet = 0;
-    /* we need to check if bet is within the balance*/
     while (true)
     {
-        bet = get_bet();
-        total_bet = bet * lines;
-        if (total_bet > balance)
+        cout << "Current balance is $" + to_string(balance) << endl;
+        string answer;
+        cout << "Type 'enter' to play or 'q' to quit. ";
+        cin >> answer;
+        if (answer == "q")
         {
-            /* bet is higher than balance, try again*/
-            cout << "You do not have enough to bet that amount, your current balance is : $" + to_string(balance) + ". You tried to bet: " + to_string(total_bet) << endl;
+            cout << "You entered q" << endl;
+            break;
         }
         else
         {
-            /* bet is within balance, break*/
-            break;
+            cin.clear();
+            cin.ignore();
+            int num = get_slot_machine_spin(ROWS, COLS, symbols_count);
+            // balance += spin(balance);
         }
     }
-    cout << "You are betting $" + to_string(bet) + " on " + to_string(lines) + ". Total bet = " + to_string(total_bet) << endl;
+    cout << "You left with $" + to_string(balance) << endl;
     return 0;
 }
