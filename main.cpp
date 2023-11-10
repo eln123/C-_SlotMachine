@@ -129,7 +129,7 @@ string convert_hash_to_str(int hash)
     return "";
 }
 
-int get_slot_machine_spin(int rows, int cols, int symbols[4][2])
+vector<vector<string>> get_slot_machine_spin(int rows, int cols, int symbols[4][2])
 {
     vector<string> all_symbols = {};
     for (int i = 0; i < (sizeof(symbols_count) / sizeof(symbols_count[0])); i++)
@@ -144,9 +144,26 @@ int get_slot_machine_spin(int rows, int cols, int symbols[4][2])
     }
     for (int i = 0; i < all_symbols.size(); i++)
     {
-        cout << convert_hash_to_str(stoi(all_symbols[i])) << endl;
+        all_symbols[i] = convert_hash_to_str(stoi(all_symbols[i]));
     }
-    return 0;
+    vector<vector<string>> columns = {};
+    for (int i = 0; i < cols; i++)
+    {
+        vector<string> column = {};
+        vector<string> current_symbols = all_symbols;
+        for (int j = 0; j < rows; j++)
+        {
+            shuffle(current_symbols.begin(), current_symbols.end(), random_device());
+            string value = current_symbols[current_symbols.size() - 1];
+            current_symbols.pop_back();
+            column.push_back(value);
+        }
+        columns.push_back(column);
+    }
+    cout << columns[0][0] << columns[0][1] << columns[0][2] << endl;
+    cout << columns[1][0] << columns[1][1] << columns[1][2] << endl;
+    cout << columns[2][0] << columns[2][1] << columns[2][2] << endl;
+    return columns;
 };
 
 int main()
@@ -165,9 +182,7 @@ int main()
         }
         else
         {
-            cin.clear();
-            cin.ignore();
-            int num = get_slot_machine_spin(ROWS, COLS, symbols_count);
+            vector<vector<string>> columns = get_slot_machine_spin(ROWS, COLS, symbols_count);
             // balance += spin(balance);
         }
     }
