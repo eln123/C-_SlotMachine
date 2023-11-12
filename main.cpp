@@ -160,11 +160,27 @@ vector<vector<string>> get_slot_machine_spin(int rows, int cols, int symbols[4][
         }
         columns.push_back(column);
     }
-    cout << columns[0][0] << columns[0][1] << columns[0][2] << endl;
-    cout << columns[1][0] << columns[1][1] << columns[1][2] << endl;
-    cout << columns[2][0] << columns[2][1] << columns[2][2] << endl;
     return columns;
 };
+
+// 5)
+void print_slot_machine(vector<vector<string>> columns)
+{
+    for (int i = 0; i < columns[0].size(); i++)
+    {
+        for (int j = 0; j < columns.size(); j++)
+        {
+            if (j != columns.size() - 1)
+            {
+                cout << columns[j][i] << " | ";
+            }
+            else
+            {
+                cout << columns[j][i] << endl;
+            }
+        }
+    }
+}
 
 int main()
 {
@@ -182,8 +198,8 @@ int main()
         }
         else
         {
-            vector<vector<string>> columns = get_slot_machine_spin(ROWS, COLS, symbols_count);
-            // balance += spin(balance);
+            vector<vector<string>> slots = get_slot_machine_spin(ROWS, COLS, symbols_count);
+            print_slot_machine(slots);
         }
     }
     cout << "You left with $" + to_string(balance) << endl;
